@@ -1,0 +1,584 @@
+/* index.css contains the global design tokens, utility classes, timeline styling, and theme overrides used across the site. */
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   THEME TOKENS
+   light  → warm parchment (مريح للعين، مش أبيض ناصع)
+   dim    → مزيج دافئ معتدل
+   dark   → أعمق وأغمق
+   ============================================================ */
+
+:root {
+
+  --bg-base:        #f7f5f1;   /* خلفية رئيسية (أفتح وأنعم) */
+  --bg-card:        #ffffff;   /* كروت نظيفة */
+  --bg-subtle:      #f1eee8;   /* مناطق خفيفة */
+  --bg-input:       #fbfaf7;
+
+
+  --border:         #e4ded2;
+  --border-soft:    #eee9df;
+
+  --text-base:      #2b2b2b;   /* رمادي داكن بدل بني */
+  --text-muted:     #6f6f6f;
+  --text-faint:     #9a9a9a;
+
+  --shadow-card:    0 4px 18px rgba(0, 0, 0, 0.06);
+
+  --scrollbar-bg:   #e8e3d9;
+}
+
+
+
+html.dark {
+  /* Dark — عميق */
+
+  --bg-base:        #0f1a14;
+  --bg-card:        #16241c;
+  --bg-subtle:      #1b2b22;
+  --bg-input:       #1a2a21;
+
+  --border:         #24382d;
+  --border-soft:    #1f3328;
+
+  --text-base:      #e8f0e8;
+  --text-muted:     #a8b5a8;
+  --text-faint:     #6f8a75;
+
+  --shadow-card:    0 6px 20px rgba(0, 0, 0, 0.4);
+  --scrollbar-bg:   #1f3328;
+}
+
+/* ============================================================
+   BASE STYLES
+   ============================================================ */
+
+* {
+  font-family: 'Cairo', sans-serif;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  direction: rtl;
+  background-color: var(--bg-base);
+  color: var(--text-base);
+  margin: 0;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ============================================================
+   UTILITY CLASSES — يستخدمها كل الموقع
+   ============================================================ */
+
+/* بديل عن bg-white / dark:bg-[#111d11] */
+.bg-card  { background-color: var(--bg-card); }
+.bg-base  { background-color: var(--bg-base); }
+.bg-subtle { background-color: var(--bg-subtle); }
+.border-theme { border-color: var(--border); }
+.text-theme  { color: var(--text-base); }
+.text-muted  { color: var(--text-muted); }
+.text-faint  { color: var(--text-faint); }
+
+/* ============================================================
+   SCROLLBAR
+   ============================================================ */
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--scrollbar-bg); }
+::-webkit-scrollbar-thumb { background: #15803d; border-radius: 99px; }
+
+/* ============================================================
+   COMPONENTS
+   ============================================================ */
+
+.auth-input-field {
+  @apply w-full px-4 py-3 rounded-lg border outline-none transition-shadow shadow-sm;
+  background-color: var(--bg-input);
+  border-color: var(--border);
+  color: var(--text-base);
+}
+.auth-input-field:focus {
+  border-color: #15803d;
+  box-shadow: 0 0 0 3px rgba(21, 128, 61, 0.15);
+}
+.auth-input-field::placeholder { color: var(--text-faint); }
+
+.auth-button {
+  @apply w-full px-4 py-3 rounded-lg bg-primary text-white font-semibold hover:bg-primary-hover transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+.gold-shimmer {
+  background: linear-gradient(90deg, #b8860b, #d4af37, #f5e6a3, #d4af37, #b8860b);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 4s linear infinite;
+}
+
+@keyframes shimmer {
+  0%   { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+.lift {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.lift:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+}
+
+.hex-avatar {
+  clip-path: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
+}
+
+.pattern-bg {
+  background-color: #0d3320;
+  background-image:
+    radial-gradient(circle at 20% 50%, rgba(212,175,55,0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(212,175,55,0.06) 0%, transparent 40%),
+    url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23D4AF37' stroke-width='0.4' stroke-opacity='0.15'%3E%3Cpolygon points='40,5 75,22.5 75,57.5 40,75 5,57.5 5,22.5'/%3E%3Cpolygon points='40,15 65,27.5 65,52.5 40,65 15,52.5 15,27.5'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+.verse-box {
+  background: linear-gradient(135deg, rgba(212,175,55,0.08), rgba(212,175,55,0.03));
+  border: 1px solid rgba(212,175,55,0.25);
+  border-radius: 16px;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-up   { animation: fadeUp 0.6s ease both; }
+.fade-up-1 { animation-delay: 0.1s; }
+.fade-up-2 { animation-delay: 0.2s; }
+.fade-up-3 { animation-delay: 0.3s; }
+.fade-up-4 { animation-delay: 0.4s; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.badge {
+  @apply inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold;
+}
+
+.line-clamp-2,
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.line-clamp-2 { -webkit-line-clamp: 2; }
+.line-clamp-3 { -webkit-line-clamp: 3; }
+
+/* ============================================================
+   THEME-AWARE OVERRIDES
+   كل كلاس tailwind بيستخدم white/stone-50/[#111d11]
+   بحطه هون ليشتغل مع المتغيرات
+   ============================================================ */
+
+/* Cards */
+.bg-white,
+.dark\:bg-\[#111d11\],
+.dark\:bg-\[#0d1a0d\] {
+  background-color: var(--bg-card) !important;
+}
+
+/* Stone/subtle backgrounds */
+.bg-stone-50,
+.dark\:bg-\[#0d1a0d\] {
+  background-color: var(--bg-subtle) !important;
+}
+
+/* Body/page backgrounds */
+.bg-stone-50.min-h-screen,
+div.min-h-screen.bg-stone-50 {
+  background-color: var(--bg-base) !important;
+}
+
+/* Borders */
+.border-gray-100,
+.dark\:border-green-900\/30 {
+  border-color: var(--border) !important;
+}
+.border-gray-200,
+.dark\:border-green-900\/40 {
+  border-color: var(--border) !important;
+}
+
+/* Text */
+.text-gray-900,
+.dark\:text-white {
+  color: var(--text-base) !important;
+}
+.text-gray-600,
+.text-gray-500,
+.dark\:text-gray-300,
+.dark\:text-gray-400 {
+  color: var(--text-muted) !important;
+}
+
+/* Navbar */
+.bg-white\/90,
+.dark\:bg-\[#0d1a0d\]\/90 {
+  background-color: color-mix(in srgb, var(--bg-card) 92%, transparent) !important;
+}
+
+/* Inputs */
+input, textarea, select {
+  background-color: var(--bg-input) !important;
+  border-color: var(--border) !important;
+  color: var(--text-base) !important;
+}
+input::placeholder, textarea::placeholder {
+  color: var(--text-faint) !important;
+}
+input:focus, textarea:focus, select:focus {
+  border-color: #15803d !important;
+  box-shadow: 0 0 0 3px rgba(21, 128, 61, 0.15) !important;
+  outline: none !important;
+}
+
+/* ============================================================
+   SEERAH TIMELINE
+   ============================================================ */
+
+.sirah-reference-shell,
+.sirah-mobile-shell {
+  background:
+    radial-gradient(circle at top right, rgba(212, 175, 55, 0.10), transparent 28%),
+    radial-gradient(circle at bottom left, rgba(21, 128, 61, 0.08), transparent 24%),
+    linear-gradient(180deg, rgba(252, 248, 239, 0.98) 0%, rgba(248, 242, 230, 0.98) 100%);
+  box-shadow: 0 20px 70px rgba(84, 64, 30, 0.08);
+  position: relative;
+}
+
+html.dark .sirah-reference-shell,
+html.dark .sirah-mobile-shell {
+  background:
+    radial-gradient(circle at top right, rgba(212, 175, 55, 0.10), transparent 26%),
+    radial-gradient(circle at bottom left, rgba(21, 128, 61, 0.10), transparent 24%),
+    linear-gradient(180deg, rgba(17, 29, 18, 0.98) 0%, rgba(12, 22, 14, 0.98) 100%);
+}
+
+.sirah-reference-shell::before,
+.sirah-mobile-shell::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: linear-gradient(rgba(181, 154, 87, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(181, 154, 87, 0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.45), transparent 78%);
+}
+
+.sirah-reference-stage {
+  position: relative;
+  min-height: 620px;
+}
+
+.sirah-main-rail {
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 22px;
+  border-radius: 999px;
+  border: 2px solid rgba(147, 130, 99, 0.55);
+  background: linear-gradient(180deg, rgba(255, 251, 244, 0.96), rgba(245, 236, 219, 0.96));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.7), 0 10px 20px rgba(80, 63, 31, 0.05);
+}
+
+html.dark .sirah-main-rail {
+  border-color: rgba(120, 180, 120, 0.22);
+  background: linear-gradient(180deg, rgba(34, 50, 34, 0.92), rgba(21, 31, 21, 0.92));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.03), 0 10px 25px rgba(0, 0, 0, 0.18);
+}
+
+.sirah-main-rail::after {
+  content: '';
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(181, 154, 87, 0.75), rgba(111, 138, 67, 0.88), rgba(207, 76, 67, 0.72));
+}
+
+.sirah-era-label {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  padding: 3px 14px 4px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #5c533e;
+  background: rgba(255, 250, 241, 0.96);
+  border: 1px solid rgba(181, 154, 87, 0.34);
+  box-shadow: 0 8px 20px rgba(90, 70, 35, 0.08);
+  white-space: nowrap;
+}
+
+html.dark .sirah-era-label {
+  color: #e3ecd8;
+  background: rgba(18, 29, 18, 0.94);
+  border-color: rgba(120, 180, 120, 0.2);
+}
+
+.sirah-era-label-before { color: #7a6641; }
+.sirah-era-label-mecca { color: #5f7a37; }
+.sirah-era-label-hijrah { color: #8b433a; }
+
+.sirah-reference-event {
+  position: absolute;
+  top: 50%;
+  width: 170px;
+  transform: translate(-50%, -50%);
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.sirah-reference-event-top {
+  height: 280px;
+  margin-top: -140px;
+}
+
+.sirah-reference-event-bottom {
+  height: 280px;
+  margin-top: 140px;
+}
+
+.sirah-reference-card {
+  position: absolute;
+  width: 170px;
+  right: 0;
+  left: 0;
+  margin-inline: auto;
+  text-align: center;
+  transition: transform 0.28s ease, opacity 0.28s ease;
+}
+
+.sirah-reference-card-top {
+  bottom: 44px;
+}
+
+.sirah-reference-card-bottom {
+  top: 44px;
+}
+
+.sirah-reference-year {
+  color: #665940;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.6;
+  margin-bottom: 6px;
+}
+
+html.dark .sirah-reference-year {
+  color: #d5c17e;
+}
+
+.sirah-reference-title {
+  margin: 0 0 6px;
+  font-size: 13px;
+  line-height: 1.7;
+  font-weight: 900;
+  color: #30271a;
+}
+
+.sirah-reference-description {
+  margin: 0;
+  color: #685c49;
+  font-size: 11px;
+  line-height: 1.8;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+html.dark .sirah-reference-title {
+  color: #eff7ea;
+}
+
+html.dark .sirah-reference-description {
+  color: #b6c7b0;
+}
+
+.sirah-reference-phase {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 8px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 800;
+  color: #6f8a43;
+  background: rgba(111, 138, 67, 0.08);
+  border: 1px solid rgba(111, 138, 67, 0.18);
+}
+
+.sirah-reference-phase.featured {
+  color: #b4342e;
+  background: rgba(207, 76, 67, 0.08);
+  border-color: rgba(207, 76, 67, 0.22);
+}
+
+.sirah-reference-stem {
+  position: absolute;
+  left: 50%;
+  width: 1px;
+  transform: translateX(-50%);
+  background: linear-gradient(180deg, rgba(181, 154, 87, 0.65), rgba(111, 138, 67, 0.65));
+}
+
+.sirah-reference-event-top .sirah-reference-stem {
+  bottom: 18px;
+  height: 94px;
+}
+
+.sirah-reference-event-bottom .sirah-reference-stem {
+  top: 18px;
+  height: 94px;
+}
+
+.sirah-reference-dot {
+  position: absolute;
+  left: 50%;
+  width: 18px;
+  height: 18px;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: #6f8a43;
+  box-shadow: 0 0 0 5px rgba(111, 138, 67, 0.12);
+  transition: transform 0.28s ease, box-shadow 0.28s ease, background-color 0.28s ease;
+}
+
+.sirah-reference-event-top .sirah-reference-dot {
+  bottom: 0;
+}
+
+.sirah-reference-event-bottom .sirah-reference-dot {
+  top: 0;
+}
+
+.sirah-reference-dot span {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: white;
+  font-size: 9px;
+  font-weight: 900;
+}
+
+.sirah-reference-event.is-featured .sirah-reference-dot {
+  background: #cf4c43;
+  box-shadow: 0 0 0 5px rgba(207, 76, 67, 0.14);
+}
+
+.sirah-reference-event:hover .sirah-reference-card,
+.sirah-reference-event.is-selected .sirah-reference-card {
+  transform: translateY(-4px);
+}
+
+.sirah-reference-event:hover .sirah-reference-dot,
+.sirah-reference-event.is-selected .sirah-reference-dot {
+  transform: translateX(-50%) scale(1.18);
+  box-shadow: 0 0 0 7px rgba(111, 138, 67, 0.18);
+}
+
+.sirah-reference-event.is-featured:hover .sirah-reference-dot,
+.sirah-reference-event.is-featured.is-selected .sirah-reference-dot {
+  box-shadow: 0 0 0 7px rgba(207, 76, 67, 0.18);
+}
+
+.sirah-reference-event.is-selected .sirah-reference-title {
+  color: #18643d;
+}
+
+html.dark .sirah-reference-event.is-selected .sirah-reference-title {
+  color: #a9d79c;
+}
+
+.sirah-reference-tip {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: rgba(255, 250, 241, 0.86);
+  border: 1px solid rgba(181, 154, 87, 0.26);
+  color: #5f594c;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+html.dark .sirah-reference-tip {
+  background: rgba(16, 27, 17, 0.9);
+  border-color: rgba(120, 180, 120, 0.2);
+  color: #d8e7d3;
+}
+
+.sirah-reference-tip-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: #cf4c43;
+  box-shadow: 0 0 0 4px rgba(207, 76, 67, 0.16);
+}
+
+.sirah-mobile-card {
+  background: rgba(252, 248, 239, 0.92);
+}
+
+html.dark .sirah-mobile-card {
+  background: rgba(16, 27, 17, 0.92);
+}
+
+.seerah-modal-root {
+  animation: seerahFade 0.25s ease;
+}
+
+.seerah-modal-panel {
+  animation: seerahPanelIn 0.45s cubic-bezier(0.18, 0.89, 0.32, 1.15);
+}
+
+@keyframes seerahFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes seerahPanelIn {
+  from {
+    opacity: 0;
+    transform: translateY(28px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
