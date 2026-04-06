@@ -78,6 +78,8 @@ export default function SeerahPage() {
       try {
         const response = await seerahApi.getAll();
         setEvents(response.data);
+      } catch (error) {
+        console.error('Error loading events:', error);
       } finally {
         setLoading(false);
       }
@@ -88,7 +90,7 @@ export default function SeerahPage() {
 
   const getPhase = (phase) => PHASES.find((item) => item.value === phase) ?? PHASES[0];
 
- const filtered = events;
+  const filtered = events;
 
   const timelineNodes = useMemo(() => buildTimelineNodes(filtered), [filtered]);
   const eraAnchors = useMemo(() => buildEraAnchors(timelineNodes), [timelineNodes]);
@@ -103,6 +105,15 @@ export default function SeerahPage() {
   const selectedEvent = selectedIndex >= 0 ? filtered[selectedIndex] : null;
 
   const modalRef = useRef(null);
+  const timelineRef = useRef(null);
+
+  // Closes the detail panel and scrolls the viewport back to the timeline.
+  const closePanel = () => {
+    setSelectedId(null);
+    setTimeout(() => {
+      timelineRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 50);
+  };
 
   // Moves the open details panel backward or forward through the ordered timeline.
   const goToEvent = (step) => {
@@ -134,8 +145,6 @@ export default function SeerahPage() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 md:py-14">
-      
-
         {loading ? (
           <PageLoader fullScreen={false} />
         ) : !filtered.length ? (
@@ -143,26 +152,21 @@ export default function SeerahPage() {
             <p className="text-lg">لا توجد أحداث في هذه المرحلة</p>
           </div>
         ) : (
-          <>
+          <div ref={timelineRef}>
             <section className="hidden xl:block">
               <div className="sirah-reference-shell rounded-[34px] border border-[#d8ccb2] dark:border-green-900/30 overflow-hidden relative px-7 py-8">
                 <div className="border-[#e4dac7] dark:border-green-900/20 flex flex-col lg:flex-row lg:items-end justify-between gap-6">
                   <div>
-                    
                     <h2 className="text-3xl md:text-4xl font-black text-gray-900 dark:text-white mb-2">الخط الزمني للسيرة</h2>
-                    
                   </div>
 
                   <div className="sirah-reference-tip">
-                    <span  />
                     انقر على أي محطة لعرض التفاصيل الكاملة والتنقل بين الحقب.
                   </div>
                 </div>
                 <div className="sirah-reference-stage">
                   <div className="sirah-main-rail" />
                   
-
-
                   {timelineNodes.map((event) => {
                     const phase = getPhase(event.phase);
                     const isFeatured = Boolean(event.isFeatured);
@@ -176,12 +180,10 @@ export default function SeerahPage() {
                         className={`sirah-reference-event ${event.direction === 'top' ? 'sirah-reference-event-top' : 'sirah-reference-event-bottom'} ${isSelected ? 'is-selected' : ''} ${isFeatured ? 'is-featured' : ''}`}
                         style={{ left: `${event.leftPercent}%` }}
                       >
-                        
                         <div className={`sirah-reference-card ${event.direction === 'top' ? 'sirah-reference-card-top' : 'sirah-reference-card-bottom'}`}>
                           <div className="sirah-reference-year">{event.year}</div>
                           <h3 className="sirah-reference-title">{event.title}</h3>
                           <p className="sirah-reference-description">{event.description}</p>
-
                         </div>
 
                         <span className="sirah-reference-stem" />
@@ -192,8 +194,6 @@ export default function SeerahPage() {
                     );
                   })}
                 </div>
-
-                
               </div>
             </section>
 
@@ -234,7 +234,7 @@ export default function SeerahPage() {
                 </div>
               </div>
             </section>
-          </>
+          </div>
         )}
       </div>
 
@@ -258,7 +258,7 @@ export default function SeerahPage() {
                 <div className="flex items-center gap-3 self-start">
                   <button
                     type="button"
-                    onClick={() => setSelectedId(null)}
+                    onClick={() => closePanel()}
                     className="w-12 h-12 rounded-full border border-white/15 bg-white/10 text-white flex items-center justify-center transition-transform duration-300 hover:scale-105 hover:bg-white/15"
                   >
                     <X size={20} />

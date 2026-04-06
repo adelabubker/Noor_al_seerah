@@ -137,19 +137,38 @@ export default function Navbar() {
 
           {/* اختيار الثيم */}
           <div className="relative" ref={themeRef}>
-            <button onClick={() => setThemeOpen(v => !v)}>
-              <ThemeIcon size={16} /> {/* أيقونة */}
-              <ChevronDown size={12} />
+            <button
+              onClick={() => setThemeOpen(v => !v)}
+              className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-semibold border transition-all duration-200
+                ${theme === 'dark'
+                  ? 'bg-yellow-400/10 border-yellow-400/30 text-yellow-400 hover:bg-yellow-400/20'
+                  : 'bg-primary/8 border-primary/20 text-primary hover:bg-primary/15'
+                }`}
+              title="تغيير المظهر"
+            >
+              <ThemeIcon size={16} />
+              <ChevronDown size={12} className={`transition-transform duration-200 ${themeOpen ? 'rotate-180' : ''}`} />
             </button>
 
             {/* قائمة الثيم */}
             {themeOpen && (
-              <div className="absolute top-full mt-2 bg-white shadow-lg">
+              <div className="absolute top-full left-0 mt-2 min-w-[110px] rounded-xl border border-[var(--border)] bg-[var(--bg-card)] shadow-xl overflow-hidden z-50">
                 {THEMES.map(t => {
                   const Icon = t.icon;
+                  const isActive = theme === t.key;
                   return (
-                    <button key={t.key} onClick={() => handleTheme(t.key)}>
-                      <Icon size={15} /> {t.label}
+                    <button
+                      key={t.key}
+                      onClick={() => handleTheme(t.key)}
+                      className={`w-full flex items-center gap-2 px-4 py-2.5 text-sm font-semibold transition-colors
+                        ${isActive
+                          ? 'bg-primary/10 text-primary'
+                          : 'text-[var(--text-base)] hover:bg-[var(--bg-subtle)]'
+                        }`}
+                    >
+                      <Icon size={15} />
+                      {t.label}
+                      {isActive && <span className="mr-auto w-1.5 h-1.5 rounded-full bg-primary" />}
                     </button>
                   );
                 })}
@@ -167,6 +186,12 @@ export default function Navbar() {
               const next = THEMES[(idx + 1) % THEMES.length].key;
               handleTheme(next);
             }}
+            className={`flex items-center justify-center w-9 h-9 rounded-lg border transition-all duration-200
+              ${theme === 'dark'
+                ? 'bg-yellow-400/10 border-yellow-400/30 text-yellow-400 hover:bg-yellow-400/20'
+                : 'bg-primary/8 border-primary/20 text-primary hover:bg-primary/15'
+              }`}
+            title={theme === 'dark' ? 'التحويل للوضع الفاتح' : 'التحويل للوضع الداكن'}
           >
             <ThemeIcon size={17} />
           </button>
