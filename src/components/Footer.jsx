@@ -1,109 +1,50 @@
-// Footer هو الفوتر (أسفل الموقع) ويحتوي على الهوية + روابط + آية قرآنية
-import { Link } from 'react-router-dom'; // Link للتنقل داخل الموقع بدون إعادة تحميل
+import { Link } from 'react-router-dom';
 
 export default function Footer() {
+  const currentYear = new Date().getFullYear();
+
   return (
-    // الحاوية الرئيسية للفوتر + ألوان الخلفية والنص
-    <footer className="bg-[#0a1f0a] text-gray-400 pt-14 pb-8 px-6 mt-0">
-
-      {/* تحديد عرض المحتوى في المنتصف */}
+    <footer className="bg-white dark:bg-[#0d1a0d] border-t border-gray-800 pt-16 pb-8 px-6 transition-colors">
       <div className="max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16 text-center md:text-left">
 
-        {/* تقسيم الفوتر إلى 3 أعمدة */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
-
-          {/* العمود الأول: الهوية */}
-          <div>
-            <div className="flex items-center gap-3 mb-4">
-
-              {/* أيقونة الموقع */}
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-green-400 flex items-center justify-center">
-                <span className="text-white text-lg">☽</span>
+          <div className="flex flex-col items-center md:items-start gap-4">
+            <Link to="/" className="flex items-center gap-3 group">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-blue-400 flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
+                <span className="text-white text-lg">🎬</span>
               </div>
-
-              {/* اسم الموقع */}
-              <div>
-                <p className="text-white font-black text-lg leading-none">
-                  نور السيرة
-                </p>
-                <p className="text-gold text-xs">
-                  Noor Al-Seerah
-                </p>
+              <div className="leading-tight">
+                <span className="block text-xl font-black text-gray-900 dark:text-white">Noor Movie</span>
+                <span className="block text-xs text-gold font-semibold tracking-wider">Premium Cinema</span>
               </div>
-            </div>
-
-            {/* وصف الموقع */}
-            <p className="text-sm leading-relaxed text-gray-500">
-              موقع إسلامي شامل يُعنى بسيرة النبي محمد ﷺ وسير صحابته الكرام رضوان الله عليهم أجمعين.
+            </Link>
+            <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed max-w-xs text-left">
+              The best platform to watch and manage your favorite movies and educational videos.
             </p>
           </div>
 
-          {/* العمود الثاني: روابط التنقل */}
           <div>
-            <h4 className="text-white font-bold mb-4 text-sm">
-              روابط سريعة
-            </h4>
-
-            {/* قائمة الروابط */}
-            <ul className="flex flex-col gap-2 text-sm">
-
-              {/* map لتوليد الروابط */}
+            <h4 className="text-gray-900 dark:text-white font-black mb-6">Quick Links</h4>
+            <ul className="space-y-3">
               {[
-                { to: '/', label: 'الصفحة الرئيسية' },
-                { to: '/seerah', label: 'السيرة النبوية' },
-                { to: '/companions', label: 'الصحابة الكرام' },
-                { to: '/login', label: 'تسجيل الدخول' },
+                { to: '/', label: 'Home' },
+                { to: '/login', label: 'Login' },
               ].map((link) => (
-
-                // كل عنصر في القائمة
                 <li key={link.to}>
-
-                  {/* رابط داخلي */}
-                  <Link
-                    to={link.to}
-                    className="hover:text-gold transition-colors flex items-center gap-2"
-                  >
-                    {/* أيقونة صغيرة */}
-                    <span className="text-gold text-xs">◈</span>
-
-                    {/* نص الرابط */}
-                    {link.label}
+                  <Link to={link.to} className="text-gray-500 dark:text-gray-400 hover:text-primary transition-colors text-sm flex items-center gap-2 justify-center md:justify-start">
+                    <span className="text-[10px] text-gold">◆</span> {link.label}
                   </Link>
-
                 </li>
               ))}
             </ul>
           </div>
-
-          {/* العمود الثالث: آية قرآنية */}
-          <div>
-            <h4 className="text-white font-bold mb-4 text-sm">
-              آية كريمة
-            </h4>
-
-            {/* صندوق الآية */}
-            <div className="verse-box p-4">
-
-              {/* نص الآية */}
-              <p className="text-gold text-base leading-loose text-center font-semibold">
-                "وَمَا أَرْسَلْنَاكَ إِلَّا رَحْمَةً لِّلْعَالَمِينَ"
-              </p>
-
-              {/* المرجع */}
-              <p className="text-gray-500 text-xs text-center mt-2">
-                سورة الأنبياء - آية 107
-              </p>
-            </div>
-          </div>
         </div>
 
-        {/* الخط السفلي + نص إضافي */}
-        <div className="border-t border-white/5 pt-6 text-center text-xs text-gray-600">
-          <p>
-            صلى الله على النبي محمد وعلى آله وصحبه أجمعين
+        <div className="pt-8 border-t border-gray-800 text-center">
+          <p className="text-gray-400 dark:text-gray-500 text-xs mb-2">
+            © {currentYear} Noor Movie Platform. All rights reserved.
           </p>
         </div>
-
       </div>
     </footer>
   );
